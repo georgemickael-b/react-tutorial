@@ -1,11 +1,11 @@
 import React from 'react'
 import Counter from './Counter/'
+import Todo from './Todo/'
 
 function App() {
   return (
     <>
-      <h2>Counter App</h2>
-      <Counter></Counter>
+      <Todo></Todo>
     </>
   )
 }

@@ -9,21 +9,49 @@ class Counter extends React.Component{
     }
   }
 
+  handleCountChangeAction = ( action ) =>{
+    if(action === "inc"){
+      this.setState( { "count" : this.state.count+1 }  )
+    }
+    else if(action === "dec"){
+      if( this.state.count > 0){
+        this.setState({"count" : this.state.count-1})
+      }
+    } 
+    else if( action ==="reset"){
+      this.setState({"count" : 0})
+    }
+  }
+
+  /*
   handlePlus = (event) => {
-    console.log("Handle Pluse is called")
     this.setState( { "count" : this.state.count+1 }  )
   }
+
+  handleMinus = (event) => {
+    if( this.state.count > 0){
+      this.setState({"count" : this.state.count-1})
+    }
+  }
+
+  handleReset = (event) => {
+    this.setState({"count" : 0})
+  }
+  */
 
   render(){ 
     return (
       <div className="container"> 
-        <button className="btn btn-danger"> - </button>
+        <button onClick={ () => this.handleCountChangeAction("dec") } className="btn btn-danger"> - </button>
         <span className="counter-text">{ this.state.count }</span>
-        <button onClick={this.handlePlus}  className="btn btn-primary"> + </button>
+        <button onClick={ () => this.handleCountChangeAction("inc")}  className="btn btn-primary"> + </button>
+        <button onClick={ () => this.handleCountChangeAction("reset")} className="btn btn-default">Reset</button>
       </div>
     )
   }
 }
+
+
 
 //Asssignment
 // imlepement minus button. The count value should not be lesser than 0

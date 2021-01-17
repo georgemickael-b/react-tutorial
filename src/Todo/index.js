@@ -53,12 +53,23 @@ let todos = [
 ]
 
 class Todo extends React.Component {
+
   constructor(props) {
     super(props)
     this.state = {
       "todos": todos
-    }
+    } 
   }
+
+  toggleCompleted = ( id  ) => {
+    let tempTodos = [...this.state.todos]  // {...OBJCT}
+    for(let todo of tempTodos){
+      if(todo.id === id){
+        todo.completed = !todo.completed
+      }
+    }
+    this.setState({"todos" : tempTodos})
+  } 
 
   render() {
     return (
@@ -70,7 +81,7 @@ class Todo extends React.Component {
               <h6>Todos</h6>
               {
                 this.state.todos.map((todo) => 
-                ( todo.completed === false && <TodoItem todo={todo} key={todo.id}></TodoItem>))
+                ( todo.completed === false && <TodoItem toggleCompleted={this.toggleCompleted} todo={todo} key={todo.id}></TodoItem>))
               }
             </div>
 
@@ -78,7 +89,7 @@ class Todo extends React.Component {
               <h6>Completed items</h6>
               {
                 this.state.todos.map((todo) => 
-                ( todo.completed === true && <TodoItem todo={todo} key={todo.id}></TodoItem>))
+                ( todo.completed === true && <TodoItem toggleCompleted={this.toggleCompleted}  todo={todo} key={todo.id}></TodoItem>))
               }
             </div>
 
@@ -95,4 +106,27 @@ export default Todo
 /*
 let a = 10
 a<10 ? <span>a lesser than 10</span> : <span>  a is not lesser than 10</span>
+*/
+/*
+
+let a = 10
+b = a
+
+// a = 10 , b = 10
+
+a = 20
+
+// a = 20 , b = 10
+
+
+
+let a = [1,2,3]
+let b = a
+
+// a [1,2,3] b [1,2,3]
+
+a.push(4)
+
+// a[1,2,3,4] b [1,2,3,4]
+
 */

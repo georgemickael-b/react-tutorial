@@ -1,97 +1,88 @@
 import React from 'react'
 import TodoItem from "../TodoItem/"
-
-let todos = [
-  {
-    "userId": 1,
-    "id": 1,
-    "title": "Buy Milk",
-    "completed": false
-  },
-  {
-    "userId": 1,
-    "id": 2,
-    "title": "Do project",
-    "completed": false
-  },
-  {
-    "userId": 1,
-    "id": 3,
-    "title": "fugiat veniam minus",
-    "completed": false
-  },
-  {
-    "userId": 1,
-    "id": 4,
-    "title": "et porro tempora",
-    "completed": true
-  },
-  {
-    "userId": 1,
-    "id": 5,
-    "title": "laboriosam mollitia et enim quasi adipisci quia provident illum",
-    "completed": false
-  },
-  {
-    "userId": 1,
-    "id": 6,
-    "title": "qui ullam ratione quibusdam voluptatem quia omnis",
-    "completed": false
-  },
-  {
-    "userId": 1,
-    "id": 7,
-    "title": "illo expedita consequatur quia in",
-    "completed": false
-  },
-  {
-    "userId": 1,
-    "id": 8,
-    "title": "quo adipisci enim quam ut ab",
-    "completed": true
-  }
-]
+import TodoForm from "../TodoForm/"
+import { getTodos } from "../api"
 
 class Todo extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      "todos": todos
-    } 
+      "todos": [],
+      "loading": true
+    }
   }
 
-  toggleCompleted = ( id  ) => {
+  componentDidMount() {
+    // Call backend
+      getTodos()
+      .then((response) => {
+        this.setState({ "todos": response.data , "loading": false })
+      })
+      .catch((error) => {
+        alert("Cannot get todos")
+      })
+  }
+
+  toggleCompleted = (id) => {
     let tempTodos = [...this.state.todos]  // {...OBJCT}
-    for(let todo of tempTodos){
-      if(todo.id === id){
+    for (let todo of tempTodos) {
+      if (todo.id === id) {
         todo.completed = !todo.completed
       }
     }
+    this.setState({ "todos": tempTodos })
+  }
+
+  addTodoItem = (todo) =>{
+    let tempTodos = [...this.state.todos]
+    tempTodos.unshift(todo)
     this.setState({"todos" : tempTodos})
-  } 
+  }
+
+  deleteTodo = (id) =>{
+    // Delete API
+    // Delete api is sucessfull do the below
+    let filteredTodos = this.state.todos.filter( (todo)=> todo.id !== id )
+    this.setState({"todos" : filteredTodos})
+  }
 
   render() {
     return (
-      <div>
-        <h5>Todo App</h5>
+      <div className="mt-2">
+        <TodoForm addTodoItem={this.addTodoItem}></TodoForm>
         <div className="container">
-          <div className="row">
-            <div className="col-md-6">
-              <h6>Todos</h6>
-              {
-                this.state.todos.map((todo) => 
-                ( todo.completed === false && <TodoItem toggleCompleted={this.toggleCompleted} todo={todo} key={todo.id}></TodoItem>))
-              }
-            </div>
+          <div>
+            {
+              this.state.loading
+            
+                ? (<div class="text-center">
+                  <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </div>)
+                : (
+                  <div className="row">
+                    <div className="col-md-6">
+                      <h6>Todos</h6>
+                      {
+                        this.state.todos.map((todo) =>
+                          (todo.completed === false && 
+                          <TodoItem deleteTodo={this.deleteTodo} toggleCompleted={this.toggleCompleted} todo={todo} key={todo.id}></TodoItem>))
+                      }
+                    </div>
 
-            <div className="col-md-6">
-              <h6>Completed items</h6>
-              {
-                this.state.todos.map((todo) => 
-                ( todo.completed === true && <TodoItem toggleCompleted={this.toggleCompleted}  todo={todo} key={todo.id}></TodoItem>))
+                    <div className="col-md-6">
+                      <h6>Completed items</h6>
+                      {
+                        this.state.todos.map((todo) =>
+                          (todo.completed === true && 
+                          <TodoItem  deleteTodo={this.deleteTodo} toggleCompleted={this.toggleCompleted} todo={todo} key={todo.id}></TodoItem>))
+                      }
+                    </div>
+                  </div>
+                )
               }
-            </div>
 
           </div>
         </div>

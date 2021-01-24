@@ -3,7 +3,7 @@ import React from 'react'
 
 
 function TodoItem(props) {
-  let {todo, toggleCompleted} = props
+  let {todo, toggleCompleted, deleteTodo} = props
 
   return (
     <div className="card">
@@ -12,7 +12,7 @@ function TodoItem(props) {
         <a onClick={() => toggleCompleted(todo.id)} href="#" className="card-link btn btn-primary">
           {todo.completed ? "Undo" : "Done"}
         </a>
-        <a href="#" className="card-link btn btn-danger">Delete</a>
+        <a onClick={()=>deleteTodo(todo.id)} href="#" className="card-link btn btn-danger">Delete</a>
       </div>
     </div>
   )

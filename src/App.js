@@ -1,6 +1,6 @@
 import React from 'react'
 import Counter from './Counter/'
-import Todo from './Todo/'
+import TodoFunctional from './Todo/TodoFunctional'
 import {
   BrowserRouter as Router,
   Switch,
@@ -35,7 +35,7 @@ function App() {
             <Counter></Counter>
           </Route>
           <Route path="/todos">
-            <Todo></Todo>
+            <TodoFunctional></TodoFunctional>
           </Route>
           <Route path="/">
             <Counter></Counter>

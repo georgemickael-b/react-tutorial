@@ -1,54 +1,36 @@
 import React from 'react'
 import "./Counter.css"
+import CounterDisplay from './CounterDisplay'
+import { useSelector , useDispatch} from "react-redux"
+import { reset, increment, decrement } from "../actions/counter"
 
-class Counter extends React.Component{
-  constructor(props){
-    super(props)
-    this.state = {
-      "count" : 0
-    }
-  }
+function Counter(props) {
+  const count = useSelector( (state) => state.counter )
+  const dispatch = useDispatch()
 
-  handleCountChangeAction = ( action ) =>{
-    if(action === "inc"){
-      this.setState( { "count" : this.state.count+1 }  )
+  const handleCountChangeAction = (action) => {
+    if (action === "inc") {
+      dispatch( increment() )
     }
-    else if(action === "dec"){
-      if( this.state.count > 0){
-        this.setState({"count" : this.state.count-1})
+    else if (action === "dec") {
+      if (count > 0) {
+        dispatch( decrement() )
       }
-    } 
-    else if( action ==="reset"){
-      this.setState({"count" : 0})
+    }
+    else if (action === "reset") {
+      dispatch( reset() )
     }
   }
 
-  /*
-  handlePlus = (event) => {
-    this.setState( { "count" : this.state.count+1 }  )
-  }
+  return (
+    <div className="container">
+      <button onClick={() => handleCountChangeAction("dec")} className="btn btn-danger"> - </button>
+      <CounterDisplay></CounterDisplay>
+      <button onClick={() => handleCountChangeAction("inc")} className="btn btn-primary"> + </button>
+      <button onClick={() => handleCountChangeAction("reset")} className="btn btn-default">Reset</button>
+    </div>
+  )
 
-  handleMinus = (event) => {
-    if( this.state.count > 0){
-      this.setState({"count" : this.state.count-1})
-    }
-  }
-
-  handleReset = (event) => {
-    this.setState({"count" : 0})
-  }
-  */
-
-  render(){ 
-    return (
-      <div className="container"> 
-        <button onClick={ () => this.handleCountChangeAction("dec") } className="btn btn-danger"> - </button>
-        <span className="counter-text">{ this.state.count }</span>
-        <button onClick={ () => this.handleCountChangeAction("inc")}  className="btn btn-primary"> + </button>
-        <button onClick={ () => this.handleCountChangeAction("reset")} className="btn btn-default">Reset</button>
-      </div>
-    )
-  }
 }
 
 
